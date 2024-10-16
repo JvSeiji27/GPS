@@ -1,10 +1,12 @@
 package joaovitorseiji.com.desafio.gps.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import joaovitorseiji.com.desafio.gps.dto.PointOfInterestDto;
@@ -22,8 +24,20 @@ public class PointOfInterestService {
 		repository.save(newPoi);
 	}
 	
-	public Page<PointOfInterest> findAll(int page, int pageSize){
-		return repository.findAll(PageRequest.of(page, pageSize));
+	public List<PointOfInterest> findAll(int page, int pageSize){
+		List<PointOfInterest> allPoints = new ArrayList<>();
+		
+		Page <PointOfInterest> pagina;
+		
+		do {
+			Pageable pageable = PageRequest.of(page, pageSize);
+			pagina = repository.findAll(pageable);
+			allPoints.addAll(pagina.getContent());
+			System.out.println("Pagina == " + page);
+			page++;
+		}while(pagina.hasNext());
+		
+		return allPoints;
 	}
 	
 	public List<PointOfInterest> findNearMe(long xMin, long xMax, long yMin, long yMax){

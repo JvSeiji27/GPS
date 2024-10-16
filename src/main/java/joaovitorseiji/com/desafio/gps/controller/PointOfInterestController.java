@@ -32,7 +32,7 @@ public class PointOfInterestController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<PointOfInterest>> listPoi(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "pageSize", defaultValue = "10") int pageSize){
+	public ResponseEntity<List<PointOfInterest>> listPoi(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "pageSize", defaultValue = "3") int pageSize){
 		var body = service.findAll(page, pageSize);
 		return ResponseEntity.ok(body);
 	}
